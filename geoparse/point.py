@@ -1,3 +1,5 @@
+# Copyright (c) Paul Tagliamonte, 2012, under the terms and conditions of the
+# COPYING file.
 
 import datetime as dt
 import math

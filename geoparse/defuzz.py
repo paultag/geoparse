@@ -1,4 +1,5 @@
-#
+# Copyright (c) Paul Tagliamonte, 2012, under the terms and conditions of the
+# COPYING file.
 
 from geoparse.point import Point
 import datetime as dt

@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# Copyright (c) Paul Tagliamonte, 2012, under the terms and conditions of the
+# COPYING file.
 
 import json
 import sys
