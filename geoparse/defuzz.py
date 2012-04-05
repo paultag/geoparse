@@ -11,6 +11,7 @@ def defuzz(dataset, change):
     this value, it's going to be snipped, providing it's past this threshold
     on *both* sides.
     """
+    # XXX: Change this to use feet, not change in lat/lon directly.
     index = 1
     while index < (len(dataset) - 1):
         pre = dataset[index - 1]
@@ -40,7 +41,6 @@ def defuzz(dataset, change):
 def rolling_average(dataset, howmany):
     """
     Expecting a list of points to defuzz from dataset
-
     Expecting the count of the last N to defuzz.
     """
     dataset = dataset[-howmany:]
@@ -56,5 +56,3 @@ def rolling_average(dataset, howmany):
     ret = Point((totalLat / total), (totalLon / total),
                 totalTime / total)
     return ret
-
-
