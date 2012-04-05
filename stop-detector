@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+import json
+import sys
+
+from geoparse.point import Point
+from geoparse.defuzz import defuzz
+
+lastPoint = None
+lines = json.load(open(sys.argv[1], 'r'))
+dataset = [Point(line['lat'], line['lon'], line['time']) for line in
+           sorted(lines, key=lambda(k): (k['time']))]
+
+print len(dataset)
+dataset = defuzz(dataset, 0.001)
+print len(dataset)
