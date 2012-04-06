@@ -7,8 +7,8 @@ from geoparse.point import Point, PointDelta
 d = 123456789
 test_time = dt.datetime.fromtimestamp(d)
 
-pd1 = PointDelta(3, 4)
-pd2 = PointDelta(5, 12)
+pd1 = PointDelta(Point(0, 0, d), Point(3, 4, d))
+pd2 = PointDelta(Point(0, 0, d), Point(5, 12, d))
 
 
 def test_create():
@@ -50,8 +50,8 @@ def test_delta_eq():
     """ Ensure equel operator works correctly with numbers & other PDs """
     assert pd1 == 5
     assert pd2 == 13
-    assert pd1 == PointDelta(3, 4)
-    assert pd2 == PointDelta(5, 12)
+    assert pd1 == PointDelta(Point(0, 0, d), Point(3, 4, d))
+    assert pd2 == PointDelta(Point(0, 0, d), Point(5, 12, d))
 
 def test_delta_ne():
     """ Ensure not equel operator works correctly with numbers & other PDs """
@@ -70,3 +70,12 @@ def test_delta_ge():
     assert pd1 == 5
     assert pd1 >= 5
     assert pd1 >= 4
+
+def test_delta_convert():
+    p1 = Point(50.0359, -5.4253, d)
+    p2 = Point(58.3838, -3.0412, d)
+    pd = PointDelta(p1, p2)
+    assert int(pd.to_miles()) == 584
+    assert int(pd.to_kilometers()) == 940
+    assert int(pd.to_feet()) == 3087098
+    assert int(pd.to_meters()) == 940947

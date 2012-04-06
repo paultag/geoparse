@@ -1,14 +1,34 @@
 # Copyright (c) Paul Tagliamonte, 2012, under the terms and conditions of the
 # COPYING file.
 
+from geoparse.distance import get_distance, EARTH_MILES, EARTH_KILOM
+
 import datetime as dt
 import math
 
 
 class PointDelta:
-    def __init__(self, latDelta, lonDelta):
+    def __init__(self, point1, point2):
+        latDelta = point1.lat - point2.lat
         self.latDelta = latDelta
+
+        lonDelta = point1.lon - point2.lon
         self.lonDelta = lonDelta
+
+        self.point1 = point1
+        self.point2 = point2
+
+    def to_miles(self):
+        return get_distance(self.point1, self.point2, EARTH_MILES)
+
+    def to_kilometers(self):
+        return get_distance(self.point1, self.point2, EARTH_KILOM)
+
+    def to_feet(self):
+        return self.to_miles() * 5280
+
+    def to_meters(self):
+        return self.to_kilometers() * 1000
 
     def _get_hyp(self):
         return math.sqrt(pow(self.latDelta, 2) + pow(self.lonDelta, 2))
@@ -49,9 +69,7 @@ class Point:
 
     def __sub__(self, other):
         try:
-            dLat = other.lat - self.lat
-            dLon = other.lon - self.lon
-            return PointDelta(dLat, dLon)
+            return PointDelta(self, other)
         except AttributeError:
             return NotImplemented
 
