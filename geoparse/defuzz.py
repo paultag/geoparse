@@ -21,7 +21,9 @@ def feet_cmpr(change, pre, cur, post):
 
 
 def meter_cmpr(change, pre, cur, post):
-    pass
+    preD = (cur - pre)
+    postD = (cur - post)
+    return preD.to_meters() > change and postD.to_meters() > change
 
 # End compare functions. Goodies below
 
@@ -31,6 +33,10 @@ def defuzz_raw(dataset, change):
 
 def defuzz_feet(dataset, change):
     return defuzz_data(dataset, change, feet_cmpr)
+
+
+def defuzz_meters(dataset, change):
+    return defuzz_data(dataset, change, meter_cmpr)
 
 
 def defuzz_data(dataset, change, cmpr):

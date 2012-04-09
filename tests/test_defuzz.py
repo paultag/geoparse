@@ -3,7 +3,7 @@
 
 import datetime as dt
 from geoparse.point import Point
-from geoparse.defuzz import defuzz_raw, defuzz_feet, \
+from geoparse.defuzz import defuzz_raw, defuzz_feet, defuzz_meters, \
                             rolling_average
 
 
@@ -63,6 +63,7 @@ def test_defuzz_double():
     ]
     # such a hack
     assert defuzz_feet(dataset, delt) == foo2
+    assert defuzz_meters(dataset, delt) == foo2
 
 
 
