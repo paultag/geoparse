@@ -23,3 +23,27 @@ In the end, this library should have the following features in place:
 
   * Figure out how far two points are from each other on the earth in meters,
     feet, or any ole' units.
+
+Bugs
+====
+
+Since this is code I'm working on for chuckles and giggles, and so much of
+this stuff is erratic, there is an implied promise that this code is just
+littered with all sorts of bugs. Some might be subtle, others might be
+tragically apparent.
+
+The ideal bug report will come with a fix, in either a GitHub pull request,
+or an emailed format-patch. Either way is perfectly fine.
+
+  * The great bug report will contain some data to showcase the problem, and
+    a small addition to the test suite to show that it does, in fact, fail.
+
+  * The good bug report will contain example data, or enough of a description
+    to create new data to show the problem.
+
+  * The bad bug report will contain only a complaint.
+
+  * The unacceptable bug report will just contain personal insults.
+
+Please feel free to email me bugs, praise, patches or requests for help,
+ - Paul
