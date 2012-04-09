@@ -5,6 +5,7 @@ from geoparse.point import Point
 import datetime as dt
 
 def raw_cmpr(change, pre, cur, post):
+    """ Do some super silly diff'ing. Not really useful. """
     preDeltP = (cur - pre)
     preDeltT = (cur.time - pre.time)
     postDeltP = (post - cur)
@@ -15,31 +16,36 @@ def raw_cmpr(change, pre, cur, post):
 
 
 def feet_cmpr(change, pre, cur, post):
+    """ Figure out if a point is an outlyer from the feet threshold. """
     preD = (cur - pre)
     postD = (cur - post)
     return preD.to_feet() > change and postD.to_feet() > change
 
 
 def meter_cmpr(change, pre, cur, post):
+    """ Figure out if a point is an outlyer from the meter threshold. """
     preD = (cur - pre)
     postD = (cur - post)
     return preD.to_meters() > change and postD.to_meters() > change
 
-# End compare functions. Goodies below
 
 def defuzz_raw(dataset, change):
+    """ Invoke a defuzz with raw_cmpr as the checker. """
     return defuzz_data(dataset, change, raw_cmpr)
 
 
 def defuzz_feet(dataset, change):
+    """ Invoke a defuzz with feet_cmpr as the checker. """
     return defuzz_data(dataset, change, feet_cmpr)
 
 
 def defuzz_meters(dataset, change):
+    """ Invoke a defuzz with meter_cmpr as the checker. """
     return defuzz_data(dataset, change, meter_cmpr)
 
 
 def defuzz_data(dataset, change, cmpr):
+    """ Remove crap entries according to cmpr's return """
     index = 1
     while index < (len(dataset) - 1):
         pre = dataset[index - 1]
