@@ -3,7 +3,8 @@
 
 import datetime as dt
 from geoparse.point import Point
-from geoparse.defuzz import defuzz, rolling_average
+from geoparse.defuzz import defuzz_raw, defuzz_feet, \
+                            rolling_average
 
 
 d = 1234567890
@@ -25,7 +26,7 @@ def test_defuzz_single():
     ]
     foo = dataset[:]
     del foo[5]
-    assert defuzz(dataset, delt) == foo
+    assert defuzz_raw(dataset, delt) == foo
 
 
 def test_defuzz_double():
@@ -47,7 +48,22 @@ def test_defuzz_double():
         Point(0, 0, d + 31)
     ]
     foo = dataset[:]
-    assert defuzz(dataset, delt) == foo
+    assert defuzz_raw(dataset, delt) == foo
+    foo2 = [
+        Point(0, 0, d),
+        Point(0, 0, d + 2),
+        Point(0, 0, d + 6),
+        Point(10, 10, d + 7),
+        Point(10, 10, d + 8),
+        Point(10, 10, d + 9),
+        Point(10, 10, d + 10),
+        Point(0, 0, d + 29),
+        Point(0, 0, d + 30),
+        Point(0, 0, d + 31)
+    ]
+    # such a hack
+    assert defuzz_feet(dataset, delt) == foo2
+
 
 
 def test_rolling_average():

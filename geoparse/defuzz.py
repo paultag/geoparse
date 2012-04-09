@@ -4,37 +4,47 @@
 from geoparse.point import Point
 import datetime as dt
 
-def defuzz(dataset, change):
-    """
-    Expecting a list of points to defuzz.
+def raw_cmpr(change, pre, cur, post):
+    preDeltP = (cur - pre)
+    preDeltT = (cur.time - pre.time)
+    postDeltP = (post - cur)
+    postDeltT = (post.time - cur.time)
+    preDeltThr = (change * preDeltT.total_seconds())
+    postDeltThr = (change * postDeltT.total_seconds())
+    return preDeltP > preDeltThr and postDeltP > postDeltThr
 
-    change should be a number, the change in lat/lon per second. If it's past
-    this value, it's going to be snipped, providing it's past this threshold
-    on *both* sides.
-    """
-    # XXX: Change this to use feet, not change in lat/lon directly.
+
+def feet_cmpr(change, pre, cur, post):
+    preD = (cur - pre)
+    postD = (cur - post)
+    return preD.to_feet() > change and postD.to_feet() > change
+
+
+def meter_cmpr(change, pre, cur, post):
+    pass
+
+# End compare functions. Goodies below
+
+def defuzz_raw(dataset, change):
+    return defuzz_data(dataset, change, raw_cmpr)
+
+
+def defuzz_feet(dataset, change):
+    return defuzz_data(dataset, change, feet_cmpr)
+
+
+def defuzz_data(dataset, change, cmpr):
     index = 1
     while index < (len(dataset) - 1):
         pre = dataset[index - 1]
         cur = dataset[index]
         post = dataset[index + 1]
-
-        preDeltP = (cur - pre)
-        preDeltT = (cur.time - pre.time)
-
-        postDeltP = (post - cur)
-        postDeltT = (post.time - cur.time)
-
-        preDeltThr = (change * preDeltT.total_seconds())
-        postDeltThr = (change * postDeltT.total_seconds())
-
-        if preDeltP > preDeltThr and postDeltP > postDeltThr:
+        if cmpr(change, pre, cur, post):
             del dataset[index]
             if index > 6:
                 index = index - 5
             else:
                 index = 1
-
         index += 1
     return dataset
 
