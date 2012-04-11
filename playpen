@@ -6,7 +6,8 @@ import json
 import sys
 
 from geoparse.point import Point
-from geoparse.defuzz import defuzz
+from geoparse.split import split_raw
+from geoparse.defuzz import defuzz_feet
 
 lastPoint = None
 lines = json.load(open(sys.argv[1], 'r'))
@@ -14,5 +15,8 @@ dataset = [Point(line['lat'], line['lon'], line['time']) for line in
            sorted(lines, key=lambda(k): (k['time']))]
 
 print len(dataset)
-dataset = defuzz(dataset, 0.001)
+dataset = defuzz_feet(dataset, 300)  # FPS, btw.
 print len(dataset)
+
+for item in split_raw(dataset, 40):
+    print item['data'][0].time
